@@ -22,12 +22,18 @@
 - name: Create Config Directory
   file: path={{ beats_conf_dir }} state=directory
 
-#Copy the default file
-- name: Copy Default File for Instance
-  template: src=beat.j2 dest={{instance_default_file}} mode=0644 force=yes owner=root group=root
-  notify: restart beat
+- name: Copy beat service file
+  template:
+    src: beat.ini.j2
+    dest: "{{ supervisord_ini_dir }}/beat.ini"
+    owner: "{{ beat_user }}"
+    group: "{{ beat_group }}"
+    mode: "u=rw,g=r,o=r"
+  notify:
+    - update supervisord
+    - restart beat
 
 #Copy templated config file
 - name: Copy Configuration File
-  template: src=beat.yml.j2 dest={{conf_file}} mode=0644 force=yes owner=root group=root
+  template: src=beat.yml.j2 dest={{conf_file}} mode=0644 force=yes owner={{ beat_user }} group={{ beat_group }}
   notify: restart beat

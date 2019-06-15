@@ -4,7 +4,52 @@
 - name: check-parameters
   include: beats-param-check.yml
 
-- name: os-specific vars
-  include_vars: "{{ansible_os_family}}.yml"
+- name: Create beat Path
+  file:
+    path: "{{ beat_install_dir }}"
+    owner: "{{ beat_user }}"
+    group: "{{ beat_group }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=x"
 
-- include: beats.yml
+- name: Create beat Version Path
+  file:
+    path: "{{ beat_install_dir }}/{{ beat_version }}"
+    owner: "{{ beat_user }}"
+    group: "{{ beat_group }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=x"
+
+- name: Create beat log Path
+  file:
+    path: "{{ beat_log_dir }}"
+    owner: "{{ beat_user }}"
+    group: "{{ beat_group }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=x"
+
+- name: Create beat data Path
+  file:
+    path: "{{ beat_data_dir }}"
+    owner: "{{ beat_user }}"
+    group: "{{ beat_group }}"
+    state: directory
+    mode: "u=rwx,g=rx,o=x"
+
+- name: "copy {{ beat_install_tar }} to {{ beat_install_dir }}"
+  copy:
+    src: "files/{{ beat_install_tar }}"
+    dest: "{{ beat_install_dir }}"
+
+- name: "Extract {{ beat_install_tar }} into {{ beat_install_dir }}/{{ beat_version }}"
+  unarchive:
+    remote_src: yes
+    src: "{{ beat_install_dir }}/{{ beat_install_tar }}"
+    dest: "{{ beat_install_dir }}/{{ beat_version }}"
+    owner: "{{ beat_user }}"
+    group: "{{ beat_group }}"
+    extra_opts: [--strip-components=1]
+
+#Configuration file for beats
+- name: Beats configuration
+  include: beats-config.yml
