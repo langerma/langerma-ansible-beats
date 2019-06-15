@@ -18,3 +18,9 @@
 ############################# Logging #########################################
 
 {{ beat_logging_conf | to_nice_yaml }}
+############################# x-pack ##########################################
+
+monitoring.enabled: true
+monitoring.elasticsearch:
+    hosts: ["http://monitor:9200"]
+

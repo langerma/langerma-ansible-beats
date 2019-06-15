@@ -2,7 +2,7 @@
 # Configure Beats Node
 
 - set_fact: pid_file={{ beats_pid_dir }}/{{beat}}.pid
-- set_fact: instance_default_file={{ default_file }}/{{beat}}
+#- set_fact: instance_default_file={{ default_file }}/{{beat}}
 - set_fact: conf_file={{ beats_conf_dir }}/{{beat}}.yml
 
 - set_fact: beat_output_conf={{ output_conf | merge_config('output') }}

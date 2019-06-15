@@ -1,13 +1,14 @@
 ---
 # defaults file for beats
-beat_user: "filebeat"
-beat_group: "filebeat"
+beat_user: "root"
+beat_group: "root"
 beat_install_tar: "filebeat-7.1.1-linux-x86_64.tar.gz"
 beat_install_dir: "/app/{{ beat }}"
 beat_log_dir: "{{ beat_install_dir }}/logs"
 beat_data_dir: "{{ beat_install_dir }}/data"
 supervisord_ini_dir: "/app/supervisord"
 beats_version: 7.1.1
+beat_version: "{{ beats_version }}"
 version_lock: false
 daemon_args: ""
 logging_conf: {"files":{"rotateeverybytes":10485760}}

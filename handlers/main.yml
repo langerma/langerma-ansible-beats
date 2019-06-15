@@ -1,10 +1,8 @@
 ---
 # handlers file for beats
----
 - name: "update supervisord"
   shell: "supervisorctl reread && supervisorctl update"
   become: yes
 
 - name: "restart beat"
   supervisorctl: name={{ beat }} state=restarted
-  when: start_service and restart_on_change and not beats_started.changed
